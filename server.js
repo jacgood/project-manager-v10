@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 const Users = require('./routes/api/users');
 
@@ -11,6 +12,8 @@ app.use(
     extended: false,
   }),
 );
+
+app.use(cors());
 
 dotenv.config();
 

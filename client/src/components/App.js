@@ -1,34 +1,43 @@
-import React from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 // components
-import Layout from "./Layout";
+import Layout from './Layout';
 
 // pages
-import Error from "../pages/error";
-import Login from "../pages/login";
+import Error from '../pages/error';
+import Login from '../pages/login';
 
 // context
-import { useUserState } from "../context/UserContext";
+import { useUserState } from '../context/UserContext';
 
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
 
   return (
-    <HashRouter>
+    <Router>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
         <Route
           exact
-          path="/app"
-          render={() => <Redirect to="/app/dashboard" />}
+          path="/"
+          render={() => <Redirect to="/admin/dashboard" />}
         />
-        <PrivateRoute path="/app" component={Layout} />
+        <Route
+          exact
+          path="/admin"
+          render={() => <Redirect to="/admin/dashboard" />}
+        />
+        <PrivateRoute path="/admin" component={Layout} />
         <PublicRoute path="/login" component={Login} />
         <Route component={Error} />
       </Switch>
-    </HashRouter>
+    </Router>
   );
 
   // #######################################################################
@@ -43,7 +52,7 @@ export default function App() {
           ) : (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: '/login',
                 state: {
                   from: props.location,
                 },
@@ -63,7 +72,7 @@ export default function App() {
           isAuthenticated ? (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: '/',
               }}
             />
           ) : (
