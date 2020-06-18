@@ -11,6 +11,10 @@ function userReducer(state, action) {
       return { ...state, isAuthenticated: true };
     case 'SIGN_OUT_SUCCESS':
       return { ...state, isAuthenticated: false };
+    case 'REGISTER_SUCCESS':
+      return { ...state, isAuthenticated: false };
+    case 'LOADED_USERS':
+      return { ...state };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -19,7 +23,7 @@ function userReducer(state, action) {
 
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
-    isAuthenticated: !!localStorage.getItem('id_token'),
+    isAuthenticated: !!localStorage.getItem('auth_token'),
   });
 
   return (
@@ -47,7 +51,14 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
+export {
+  UserProvider,
+  useUserState,
+  useUserDispatch,
+  loginUser,
+  registerUser,
+  signOut,
+};
 
 // ###########################################################
 
@@ -64,10 +75,71 @@ function loginUser(dispatch, email, password, history, setIsLoading, setError) {
       setIsLoading(false);
       dispatch({ type: 'LOGIN_SUCCESS', payload: jwt_decode(token) });
       history.push('/admin/dashboard');
-      // setAuthToken(token)
     })
     .catch(err => {
       dispatch({ type: 'LOGIN_FAILURE' });
+      setError(true);
+      setIsLoading(false);
+    });
+}
+
+// function getUsers(dispatch, setIsLoading, setError) {
+//   setError(false);
+//   setIsLoading(true);
+
+//   axios
+//     .get('http://localhost:5000/api/users')
+//     .then(res => {
+//       const { users } = res.data;
+//       const userList = users.map(user => [
+//         user.firstName,
+//         user.lastName,
+//         user.email,
+//         user.date,
+//       ]);
+//       localStorage.setItem('users', userList);
+//       setError(null);
+//       setIsLoading(false);
+//       dispatch({ type: 'LOADED_USERS', payload: userList });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       dispatch({ type: 'USER_ERROR' });
+//       setError(true);
+//       setIsLoading(false);
+//     });
+// }
+
+function registerUser(
+  dispatch,
+  firstName,
+  lastName,
+  email,
+  password,
+  password2,
+  history,
+  setIsLoading,
+  setError,
+) {
+  setError(false);
+  setIsLoading(true);
+
+  axios
+    .post('http://localhost:5000/api/users/register', {
+      firstName,
+      lastName,
+      email,
+      password,
+      password2,
+    })
+    .then(res => {
+      setError(null);
+      setIsLoading(false);
+      history.push('/login');
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ type: 'REGISTER_ERROR' });
       setError(true);
       setIsLoading(false);
     });

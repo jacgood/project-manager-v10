@@ -68,7 +68,8 @@ router.post('/login', (req, res) => {
         // Create JWT Payload
         const payload = {
           id: user.id,
-          name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
         };
         // Sign token
         jwt.sign(
@@ -90,6 +91,15 @@ router.post('/login', (req, res) => {
           .json({ passwordincorrect: 'Password incorrect' });
       }
     });
+  });
+});
+
+router.get('/', (req, res) => {
+  User.find().then((users) => {
+    if (!users) {
+      return res.status(404).json({ noUsersFound: 'No users found' });
+    }
+    return res.json(users);
   });
 });
 

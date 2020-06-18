@@ -1,36 +1,19 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
+import React, { useContext } from 'react';
+import { Grid } from '@material-ui/core';
+import MUIDataTable from 'mui-datatables';
 
-// components
-import PageTitle from "../../components/PageTitle";
-import Widget from "../../components/Widget";
-import Table from "../dashboard/components/Table/Table";
+import { UsersContext } from '../../context/UsersContext';
 
 // data
-import mock from "../dashboard/mock";
-
-const datatableData = [
-  ["Joe James", "Example Inc.", "Yonkers", "NY"],
-  ["John Walsh", "Example Inc.", "Hartford", "CT"],
-  ["Bob Herm", "Example Inc.", "Tampa", "FL"],
-  ["James Houston", "Example Inc.", "Dallas", "TX"],
-  ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
-  ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
-  ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
-  ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
-  ["Meral Elias", "Example Inc.", "Hartford", "CT"],
-  ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
-  ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
-  ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
-  ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
-  ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
-  ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
-  ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-  ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
-];
+import mock from '../dashboard/mock';
+// components
+import PageTitle from '../../components/PageTitle';
+import Widget from '../../components/Widget';
+import Table from '../dashboard/components/Table/Table';
 
 export default function Tables() {
+  const tableContext = useContext(UsersContext);
+  const { users } = tableContext;
   return (
     <>
       <PageTitle title="Tables" />
@@ -38,10 +21,22 @@ export default function Tables() {
         <Grid item xs={12}>
           <MUIDataTable
             title="Employee List"
-            data={datatableData}
-            columns={["Name", "Company", "City", "State"]}
+            data={users.map(user => [
+              user.firstName,
+              user.lastName,
+              user.email,
+              user.password,
+              user.date,
+            ])}
+            columns={[
+              'First Name',
+              'Last Name',
+              'Email',
+              'Password Hash',
+              'Date Joined',
+            ]}
             options={{
-              filterType: "checkbox",
+              filterType: 'checkbox',
             }}
           />
         </Grid>

@@ -8,14 +8,17 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { LayoutProvider } from './context/LayoutContext';
 import { UserProvider } from './context/UserContext';
+import { UsersProvider } from './context/UsersContext';
 
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>
-      <ThemeProvider theme={Themes.default}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <UsersProvider>
+        <ThemeProvider theme={Themes.default}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </UsersProvider>
     </UserProvider>
   </LayoutProvider>,
   document.getElementById('root'),
