@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const UsersContext = React.createContext();
+export const UsersContext = React.createContext();
 
-function UsersProvider() {
+export function UsersProvider(props) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,15 +23,14 @@ function UsersProvider() {
   useEffect(() => {
     fetchUsers();
   }, []);
-  console.log(users);
   return (
     <UsersContext.Provider
       value={{
         loading,
         users,
       }}
-    ></UsersContext.Provider>
+    >
+      {props.children}
+    </UsersContext.Provider>
   );
 }
-
-export { UsersProvider, UsersContext };

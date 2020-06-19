@@ -10,6 +10,7 @@ import {
   LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
+  PeopleAlt as PeopleIcon,
 } from '@material-ui/icons';
 import { useTheme } from '@material-ui/styles';
 import { withRouter } from 'react-router-dom';
@@ -37,7 +38,7 @@ const structure = [
     link: '/admin/typography',
     icon: <TypographyIcon />,
   },
-  { id: 2, label: 'Tables', link: '/admin/tables', icon: <TableIcon /> },
+  { id: 2, label: 'Users', link: '/admin/users', icon: <PeopleIcon /> },
   {
     id: 3,
     label: 'Notifications',

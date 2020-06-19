@@ -13,8 +13,6 @@ function userReducer(state, action) {
       return { ...state, isAuthenticated: false };
     case 'REGISTER_SUCCESS':
       return { ...state, isAuthenticated: false };
-    case 'LOADED_USERS':
-      return { ...state };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -82,33 +80,6 @@ function loginUser(dispatch, email, password, history, setIsLoading, setError) {
       setIsLoading(false);
     });
 }
-
-// function getUsers(dispatch, setIsLoading, setError) {
-//   setError(false);
-//   setIsLoading(true);
-
-//   axios
-//     .get('http://localhost:5000/api/users')
-//     .then(res => {
-//       const { users } = res.data;
-//       const userList = users.map(user => [
-//         user.firstName,
-//         user.lastName,
-//         user.email,
-//         user.date,
-//       ]);
-//       localStorage.setItem('users', userList);
-//       setError(null);
-//       setIsLoading(false);
-//       dispatch({ type: 'LOADED_USERS', payload: userList });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       dispatch({ type: 'USER_ERROR' });
-//       setError(true);
-//       setIsLoading(false);
-//     });
-// }
 
 function registerUser(
   dispatch,

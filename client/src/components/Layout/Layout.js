@@ -14,7 +14,7 @@ import Dashboard from '../../pages/dashboard';
 import Typography from '../../pages/typography';
 import Notifications from '../../pages/notifications';
 import Maps from '../../pages/maps';
-import Tables from '../../pages/tables';
+import Users from '../../pages/users';
 import Icons from '../../pages/icons';
 import Charts from '../../pages/charts';
 
@@ -41,7 +41,7 @@ function Layout(props) {
           <Switch>
             <Route path="/admin/dashboard" component={Dashboard} />
             <Route path="/admin/typography" component={Typography} />
-            <Route path="/admin/tables" component={Tables} />
+            <Route path="/admin/users" component={Users} />
             <Route path="/admin/notifications" component={Notifications} />
             <Route
               exact

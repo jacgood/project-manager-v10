@@ -1,28 +1,23 @@
-const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// Load input validation
-const validateRegisterInput = require('../../validation/register');
-const validateLoginInput = require('../../validation/login');
-// Load User model
-const User = require('../../models/User.dao');
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
-router.post('/register', (req, res) => {
+const validateRegisterInput = require('../validation/register');
+const validateLoginInput = require('../validation/login');
+
+const Users = require('../models/User.dao');
+
+exports.createUser = function (req, res, next) {
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  User.findOne({ email: req.body.email }).then((user) => {
+  Users.findOne({ email: req.body.email }).then((user) => {
     if (user) {
       return res.status(400).json({ email: 'Email already exists' });
     } else {
-      const newUser = new User({
+      const user = new Users({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -30,24 +25,26 @@ router.post('/register', (req, res) => {
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+        bcrypt.hash(user.password, salt, (err, hash) => {
           if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then((user) => res.json(user))
-            .catch((err) => console.log(err));
+          user.password = hash;
+          Users.create(user, function (err, user) {
+            if (err) {
+              res.json({
+                error: err,
+              });
+            }
+            res.json({
+              message: 'User created successfully',
+            });
+          });
         });
       });
     }
   });
-});
+};
 
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
-router.post('/login', (req, res) => {
-  // Form validation
+exports.loginUser = function (req, res, next) {
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
   if (!isValid) {
@@ -56,7 +53,7 @@ router.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   // Find user by email
-  User.findOne({ email }).then((user) => {
+  Users.findOne({ email }).then((user) => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ emailnotfound: 'Email not found' });
@@ -92,25 +89,56 @@ router.post('/login', (req, res) => {
       }
     });
   });
-});
+};
 
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  User.findById(id).then((user) => {
-    if (!user) {
-      return res.status(404).json({ noUserFound: ' No user found' });
+exports.getUsers = function (req, res, next) {
+  Users.get({}, function (err, users) {
+    if (err) {
+      res.json({
+        error: err,
+      });
     }
-    return res.json({ user });
+    res.json({
+      users: users,
+    });
   });
-});
+};
 
-router.get('/', (req, res) => {
-  User.find().then((users) => {
-    if (!users) {
-      return res.status(404).json({ noUsersFound: 'No users found' });
+exports.getUser = function (req, res, next) {
+  Users.get({ _id: req.params.id }, function (err, users) {
+    if (err) {
+      res.json({
+        error: err,
+      });
     }
-    return res.json(users);
+    res.json({
+      users: users,
+    });
   });
-});
+};
 
-module.exports = router;
+exports.updateUser = function (req, res, next) {
+  Users.update({ _id: req.params.id }, req.body, function (err, user) {
+    if (err) {
+      res.json({
+        error: err,
+      });
+    }
+    res.json({
+      message: 'User updated successfully',
+    });
+  });
+};
+
+exports.removeUser = function (req, res, next) {
+  Users.delete({ _id: req.params.id }, function (err, user) {
+    if (err) {
+      res.json({
+        error: err,
+      });
+    }
+    res.json({
+      message: 'User deleted successfully',
+    });
+  });
+};

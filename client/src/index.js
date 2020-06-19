@@ -8,17 +8,18 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { LayoutProvider } from './context/LayoutContext';
 import { UserProvider } from './context/UserContext';
-import { UsersProvider } from './context/UsersContext';
+// import { UsersProvider } from './context/UsersContext';
+import { AuthProvider } from './context/AuthContext';
 
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>
-      <UsersProvider>
+      <AuthProvider>
         <ThemeProvider theme={Themes.default}>
           <CssBaseline />
           <App />
         </ThemeProvider>
-      </UsersProvider>
+      </AuthProvider>
     </UserProvider>
   </LayoutProvider>,
   document.getElementById('root'),

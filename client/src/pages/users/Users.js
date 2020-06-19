@@ -2,25 +2,22 @@ import React, { useContext } from 'react';
 import { Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 
-import { UsersContext } from '../../context/UsersContext';
+import { AuthContext } from '../../context/AuthContext';
 
-// data
-import mock from '../dashboard/mock';
 // components
-import PageTitle from '../../components/PageTitle';
-import Widget from '../../components/Widget';
-import Table from '../dashboard/components/Table/Table';
+import PageTitle from '../../components/PageTitle/PageTitle';
 
-export default function Tables() {
-  const tableContext = useContext(UsersContext);
-  const { users } = tableContext;
+export default function Users() {
+  const userData = useContext(AuthContext);
+  const { users } = userData;
+
   return (
     <>
-      <PageTitle title="Tables" />
+      <PageTitle title="Users" />
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <MUIDataTable
-            title="Employee List"
+            title="Users"
             data={users.map(user => [
               user.firstName,
               user.lastName,
@@ -39,11 +36,6 @@ export default function Tables() {
               filterType: 'checkbox',
             }}
           />
-        </Grid>
-        <Grid item xs={12}>
-          <Widget title="Material-UI Table" upperTitle noBodyPadding>
-            <Table data={mock.table} />
-          </Widget>
         </Grid>
       </Grid>
     </>
