@@ -10,15 +10,18 @@ import { LayoutProvider } from './context/LayoutContext';
 import { UserProvider } from './context/UserContext';
 // import { UsersProvider } from './context/UsersContext';
 import { AuthProvider } from './context/AuthContext';
+import { ProjectsProvider } from './context/ProjectsContext';
 
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>
       <AuthProvider>
-        <ThemeProvider theme={Themes.default}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+        <ProjectsProvider>
+          <ThemeProvider theme={Themes.default}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+        </ProjectsProvider>
       </AuthProvider>
     </UserProvider>
   </LayoutProvider>,

@@ -56,10 +56,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     fetchUsers();
-    return () => {
-      fetchUsers();
-    };
-  }, [users]);
+    // return () => {
+    //   fetchUsers();
+    // };
+  }, []);
   return (
     <AuthContext.Provider
       value={{
@@ -74,37 +74,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-// export const UsersContext = createContext();
-// export function UsersProvider(props) {
-//   const [users, setUsers] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const fetchUsers = () => {
-//     axios
-//       .get('http://localhost:5000/api/users')
-//       .then(res => {
-//         const { data } = res;
-//         const { users } = data;
-//         setUsers(users);
-//         setLoading(false);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   };
-
-//   useEffect(() => {
-//     fetchUsers();
-//   }, [users]);
-//   return (
-//     <UsersContext.Provider
-//       value={{
-//         loading,
-//         users,
-//       }}
-//     >
-//       {props.children}
-//     </UsersContext.Provider>
-//   );
-// }

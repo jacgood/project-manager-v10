@@ -16,6 +16,8 @@ import { useTheme } from '@material-ui/styles';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 
+import ListIcon from '@material-ui/icons/List';
+
 // styles
 import useStyles from './styles';
 
@@ -34,9 +36,9 @@ const structure = [
   { id: 0, label: 'Dashboard', link: '/admin/dashboard', icon: <HomeIcon /> },
   {
     id: 1,
-    label: 'Typography',
-    link: '/admin/typography',
-    icon: <TypographyIcon />,
+    label: 'Projects',
+    link: '/admin/projects',
+    icon: <ListIcon />,
   },
   { id: 2, label: 'Users', link: '/admin/users', icon: <PeopleIcon /> },
   {
